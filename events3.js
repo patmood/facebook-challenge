@@ -53,18 +53,18 @@ function maxConcurrentEvents(eventList) {
   }, 1)
 }
 
-function setOffset(eventList) {
-  return eventList.map(function(event, i) {
-    event.offset = i
-    return event
+function setOffset(containers) {
+  return containers.map(function(eventList) {
+    return eventList.map(function(event, i) {
+      event.offset = i
+      return event
+    })
   })
 }
 
 function setWidth(containers) {
   return containers.map(function(container) {
     var width = BASE_WIDTH / (maxConcurrentEvents(container) + 1)
-
-    container = setOffset(container)
     return container.map(function(event) {
       event.width = width
       return event
@@ -87,7 +87,8 @@ function render(containers) {
 function layOutDay(events) {
   var containers = createContainers(events)
 
-  var containers = setWidth(containers)
+  containers = setWidth(containers)
+  containers = setOffset(containers)
 
   render(containers)
 }
