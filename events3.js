@@ -4,7 +4,7 @@ var sample = [
   {start: 560, end: 620},
   {start: 610, end: 670}
 ]
-var baseWidth = 600
+var BASE_WIDTH = 600
 
 function createEventEl(event) {
   var top = event.start
@@ -38,10 +38,26 @@ function createContainers(eventList) {
   return containers
 }
 
+function doesCollide(event1, event2) {
+  return (event1.start >= event2.start && event1.start <= event2.end)
+          || (event1.end >= event2.start && event1.end <= event2.end)
+}
+
+function maxConcurrentEvents(eventList) {
+  var event = eventList[0]
+  var colliding = eventList.slice(1).filter(function(e) { return doesCollide(event, e)})
+  if (colliding.length === 0) return 0
+
+  return colliding.reduce(function(memo, currentEvent, i) {
+    return memo + maxConcurrentEvents(colliding)
+  }, 1)
+}
+
 function setWidth(containers) {
   return containers.map(function(container) {
+    var width = BASE_WIDTH / (maxConcurrentEvents(container) + 1)
     return container.map(function(event) {
-      event.width = baseWidth / container.length
+      event.width = width
       return event
     })
   })
