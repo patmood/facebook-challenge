@@ -10,7 +10,7 @@ function createEventEl(event) {
   var top = event.start
   var height = event.end - event.start
   var width = event.width
-  var left = 0
+  var left = event.offset * width
   var d = document.createElement('div')
   d.className = 'event'
   d.style.cssText = 'top:' + top + 'px;'
@@ -53,9 +53,18 @@ function maxConcurrentEvents(eventList) {
   }, 1)
 }
 
+function setOffset(eventList) {
+  return eventList.map(function(event, i) {
+    event.offset = i
+    return event
+  })
+}
+
 function setWidth(containers) {
   return containers.map(function(container) {
     var width = BASE_WIDTH / (maxConcurrentEvents(container) + 1)
+
+    container = setOffset(container)
     return container.map(function(event) {
       event.width = width
       return event
