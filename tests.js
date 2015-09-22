@@ -1,13 +1,9 @@
-// step 1: sort
-function assert(expected, actual) {
-  if (JSON.stringify(actual) === JSON.stringify(expected)) {
-  } else {
+function assert(expected, actual, name) {
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
     console.error(expected, actual)
-    throw 'Fail'
+    throw 'Fail: ' + name
   }
 }
-var Event = function (start, end) { return { start: start, end: end } }
-var EventGroup = function(start, end, events) { return { start: start, end: end, events: events } }
 
 // job of sort:
 // - ensure events that start early come before ones that start later
@@ -68,6 +64,7 @@ var EventGroup = function(start, end, events) { return { start: start, end: end,
 
   var tests = [
     {
+      name: 'creates a new column group',
       given: {
         groupList: [],
         event: Event(0,1)
@@ -75,6 +72,7 @@ var EventGroup = function(start, end, events) { return { start: start, end: end,
       expected: [EventGroup(0,1, [Event(0,1)])]
     },
     {
+      name: 'adds to existing column group when events dont collide',
       given: {
         groupList: [EventGroup(0, 1, [Event(0,1)])],
         event: Event(1,2)
@@ -82,6 +80,7 @@ var EventGroup = function(start, end, events) { return { start: start, end: end,
       expected: [EventGroup(0, 2, [Event(0,1), Event(1,2)])]
     },
     {
+      name: 'creates new column group when events collide',
       given: {
         groupList: [EventGroup(0, 1, [Event(0,1)])],
         event: Event(0,2)
@@ -91,7 +90,37 @@ var EventGroup = function(start, end, events) { return { start: start, end: end,
   ]
 
   tests.forEach(function(test) {
-    assert(addOrCreateColumnGroup(test.given.groupList, test.given.event), test.expected)
+    assert(addOrCreateColumnGroup(test.given.groupList, test.given.event), test.expected, test.name)
   })
 
 })()
+
+// ;(function rowGroupToRenderableListTest() {
+//   var tests = [
+//     {
+//       given: {
+//         groupList: [],
+//         event: Event(0,1)
+//       },
+//       expected: [EventGroup(0,1, [Event(0,1)])]
+//     },
+//     {
+//       given: {
+//         groupList: [EventGroup(0, 1, [Event(0,1)])],
+//         event: Event(1,2)
+//       },
+//       expected: [EventGroup(0, 2, [Event(0,1), Event(1,2)])]
+//     },
+//     {
+//       given: {
+//         groupList: [EventGroup(0, 1, [Event(0,1)])],
+//         event: Event(0,2)
+//       },
+//       expected: [EventGroup(0, 1, [Event(0,1)]), EventGroup(0,2,[Event(0,2)])]
+//     },
+//   ]
+//
+//   tests.forEach(function(test) {
+//     assert(addOrCreateColumnGroup(test.given.groupList, test.given.event), test.expected)
+//   })
+// })()
