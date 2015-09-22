@@ -1,12 +1,14 @@
+var BASE_WIDTH = 600
 var Event = function (start, end) { return { start: start, end: end } }
 var EventGroup = function(start, end, events) { return { start: start, end: end, events: events } }
 var RowGroup = function(start, end, columns) { return { start: start, end: end, columns, columns } }
 var RenderableEvent = function(start, end, rowLength, columnIndex) {
+  var width = BASE_WIDTH / rowLength
   return {
-    top: '',
-    left: '',
-    width: '',
-    height: ''
+    top: start,
+    left: width * columnIndex,
+    width: width,
+    height: end - start
   }
 }
 
