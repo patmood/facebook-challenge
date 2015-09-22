@@ -20,6 +20,18 @@ function createEventEl(event) {
   return d
 }
 
+function sortEvents(eventList) {
+  return eventList.sort(function(eventA, eventB) {
+    var startDelta = eventA.start - eventB.start
+    if (startDelta === 0) {
+      var endDelta = eventA.end - eventB.end
+      return endDelta === 0 ? 0 : endDelta
+    } else {
+      return startDelta
+    }
+  })
+}
+
 function createContainers(eventList) {
   var containerEndTime = eventList[0].end
   var containers = [[]]
@@ -55,11 +67,27 @@ function maxConcurrentEvents(eventList) {
 
 function setOffset(containers) {
   return containers.map(function(eventList) {
-    return eventList.map(function(event, i) {
-      event.offset = i
-      return event
+    var offset = 0
+    var endLimit = eventList[0].end
+    eventList.forEach(function(event, i) {
+      if (event.start <= endLimit) {
+        offset++
+      } {
+        endLimit = event.end
+        offset = 0
+      }
+      eventList[i].offset = offset
     })
+    return eventList
   })
+
+  // Simple
+  // return containers.map(function(eventList) {
+  //   return eventList.map(function(event, i) {
+  //     event.offset = i
+  //     return event
+  //   })
+  // })
 }
 
 function setWidth(containers) {
@@ -79,6 +107,7 @@ function render(containers) {
   }, [])
 
   flatContainers.forEach(function(event) {
+    // console.log(event);
     var eventEl = createEventEl(event)
     calendar.appendChild(eventEl)
   })
