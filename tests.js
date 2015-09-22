@@ -95,32 +95,19 @@ function assert(expected, actual, name) {
 
 })()
 
-// ;(function rowGroupToRenderableListTest() {
-//   var tests = [
-//     {
-//       given: {
-//         groupList: [],
-//         event: Event(0,1)
-//       },
-//       expected: [EventGroup(0,1, [Event(0,1)])]
-//     },
-//     {
-//       given: {
-//         groupList: [EventGroup(0, 1, [Event(0,1)])],
-//         event: Event(1,2)
-//       },
-//       expected: [EventGroup(0, 2, [Event(0,1), Event(1,2)])]
-//     },
-//     {
-//       given: {
-//         groupList: [EventGroup(0, 1, [Event(0,1)])],
-//         event: Event(0,2)
-//       },
-//       expected: [EventGroup(0, 1, [Event(0,1)]), EventGroup(0,2,[Event(0,2)])]
-//     },
-//   ]
-//
-//   tests.forEach(function(test) {
-//     assert(addOrCreateColumnGroup(test.given.groupList, test.given.event), test.expected)
-//   })
-// })()
+;(function rowGroupToRenderableListTest() {
+  var tests = [
+    {
+      name: 'Produces flat renderable event from nested event',
+      given: {
+        renderableEventsList: [],
+        rowGroup: RowGroup(0, 1, [ EventGroup(0, 1, [Event(0,1)]) ])
+      },
+      expected: [RenderableEvent(0, 1, 1, 0)]
+    },
+  ]
+
+  tests.forEach(function(test) {
+    assert(rowGroupToRenderableList(test.given.renderableEventsList, test.given.rowGroup), test.expected)
+  })
+})()

@@ -84,3 +84,5 @@ function rowGroupToRenderableList(renderableEventsList, rowGroup) {
 // Start new version to get time complexity down
 // Transduce instead of reduce
 // Can render row as soon as its finished
+
+// ES6
