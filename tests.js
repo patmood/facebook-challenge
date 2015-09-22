@@ -85,7 +85,7 @@ function assert(expected, actual, name) {
         groupList: [EventGroup(540, 600, [Event(540,600)]), EventGroup(560, 620, [Event(560,620)])],
         event: Event(610,670)
       },
-      expected: [EventGroup(540, 600, [Event(540,600), Event(610,670)]), EventGroup(560, 620, [Event(560,620)])]
+      expected: [EventGroup(540, 670, [Event(540,600), Event(610,670)]), EventGroup(560, 620, [Event(560,620)])]
     },
     {
       name: 'creates new column group when events collide',
@@ -113,7 +113,7 @@ function assert(expected, actual, name) {
       },
       expected: [RenderableEvent(0, 1, 1, 0)]
     },
-	{
+  	{
       name: 'add to existing row',
       given: {
         renderableEventsList: [RenderableEvent(0, 1, 1, 0)],
@@ -121,21 +121,29 @@ function assert(expected, actual, name) {
       },
       expected: [RenderableEvent(0, 1, 1, 0), RenderableEvent(1, 2, 1, 0)]
     },
-	{
+  	{
       name: 'row with multiple events in a column',
       given: {
         renderableEventsList: [],
         rowGroup: RowGroup(0, 2, [ EventGroup(0, 1, [Event(0,1), Event(1,2)]) ])
       },
-      expected: [RenderableEvent(0, 1, 1, 0), RenderableEvent(1, 2, 1, 1)]
+      expected: [RenderableEvent(0, 1, 1, 0), RenderableEvent(1, 2, 1, 0)]
     },
-	{
+  	{
       name: 'row with multiple columns',
       given: {
         renderableEventsList: [],
         rowGroup: RowGroup(0, 2, [ EventGroup(0, 1, [Event(0,1)]), EventGroup(0, 2, [Event(0,2)]) ])
       },
-      expected: [RenderableEvent(0, 1, 2, 0), RenderableEvent(0, 2, 2, 0)]
+      expected: [RenderableEvent(0, 1, 2, 0), RenderableEvent(0, 2, 2, 1)]
+    },
+    {
+      name: 'row with multiple columns real example',
+      given: {
+        renderableEventsList: [],
+        rowGroup: RowGroup(540, 670, [EventGroup(540, 670, [Event(540,600), Event(610,670)]), EventGroup(560, 620, [Event(560,620)])])
+      },
+      expected: [RenderableEvent(540, 600, 2, 0), RenderableEvent(610, 670, 2, 0), RenderableEvent(560, 620, 2, 1)]
     },
   ]
 

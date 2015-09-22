@@ -47,9 +47,11 @@ function addOrCreateRowGroup(listOfRowGroups, event) {
   }
 }
 
-function addOrCreateColumnGroup(listOfColumnGroups, event) {
+function addOrCreateColumnGroup (listOfColumnGroups, event) {
   // Group by non-overlapping events
-  var lastGroup = listOfColumnGroups[listOfColumnGroups.length - 1]
+  var lastGroup = listOfColumnGroups.find(function (columnGroup) {
+    return columnGroup.end <= event.start
+  })
   if (lastGroup && event.start >= lastGroup.end) {
     // Add to existing colunm
     lastGroup.events.push(event)
@@ -68,13 +70,13 @@ function eventListToRow(eventList) {
   return eventList.map(eventColumn)
 }
 
-// mapCat ro flatMap
-// WRite reduce over rowgroups that produces renderable event list
+// mapCat or flatMap
+// Write reduce over rowgroups that produces renderable event list
 
 function rowGroupToRenderableList(renderableEventsList, rowGroup) {
   var events = []
-  rowGroup.columns.map(function(columnGroup) {
-    columnGroup.events.map(function(event, i) {
+  rowGroup.columns.map(function(columnGroup, i) {
+    columnGroup.events.map(function(event) {
       events.push( RenderableEvent(event.start, event.end, rowGroup.columns.length, i) )
     })
   })
