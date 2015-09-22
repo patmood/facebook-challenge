@@ -64,7 +64,7 @@ function eventColumn(eventGroup) {
   return RowGroup(eventGroup.start, eventGroup.end, groupEventColumns(eventGroup.events))
 }
 
-function groupToRow(eventList) {
+function eventListToRow(eventList) {
   return eventList.map(eventColumn)
 }
 

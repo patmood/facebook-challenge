@@ -80,6 +80,14 @@ function assert(expected, actual, name) {
       expected: [EventGroup(0, 2, [Event(0,1), Event(1,2)])]
     },
     {
+      name: 'adds to first column group when events dont collide and theres 2 columns',
+      given: {
+        groupList: [EventGroup(540, 600, [Event(540,600)]), EventGroup(560, 620, [Event(560,620)])],
+        event: Event(610,670)
+      },
+      expected: [EventGroup(540, 600, [Event(540,600), Event(610,670)]), EventGroup(560, 620, [Event(560,620)])]
+    },
+    {
       name: 'creates new column group when events collide',
       given: {
         groupList: [EventGroup(0, 1, [Event(0,1)])],

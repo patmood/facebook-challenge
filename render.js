@@ -24,12 +24,12 @@ function render(renderable) {
   })
 }
 
-render(
-  flatRenderableList(
-    groupToRow(
-      groupEventRow(
-        sortEvents(sampleData)
-      )
-    )
-  )
-)
+// render(
+//   flatRenderableList(
+//     groupToRow(
+//       groupEventRow(
+//         sortEvents(sampleData)
+//       )
+//     )
+//   )
+// )
