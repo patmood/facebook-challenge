@@ -24,6 +24,7 @@ function sortEvents(eventList) {
   })
 }
 
+
 function groupEventRow(eventList) {
   return eventList.reduce(addOrCreateRowGroup, [])
 }
@@ -63,6 +64,10 @@ function eventColumn(eventGroup) {
   return RowGroup(eventGroup.start, eventGroup.end, groupEventColumns(eventGroup.events))
 }
 
+function groupToRow(eventList) {
+  return eventList.map(eventColumn)
+}
+
 // mapCat ro flatMap
 // WRite reduce over rowgroups that produces renderable event list
 
@@ -75,6 +80,10 @@ function rowGroupToRenderableList(renderableEventsList, rowGroup) {
   })
 
   return renderableEventsList.concat(events)
+}
+
+function flatRenderableList(rowGroupList) {
+  return rowGroupList.reduce(rowGroupToRenderableList, [])
 }
 
 // TODO: implement flow function

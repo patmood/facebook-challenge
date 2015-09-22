@@ -105,9 +105,33 @@ function assert(expected, actual, name) {
       },
       expected: [RenderableEvent(0, 1, 1, 0)]
     },
+	{
+      name: 'add to existing row',
+      given: {
+        renderableEventsList: [RenderableEvent(0, 1, 1, 0)],
+        rowGroup: RowGroup(1, 2, [ EventGroup(1, 2, [Event(1,2)]) ])
+      },
+      expected: [RenderableEvent(0, 1, 1, 0), RenderableEvent(1, 2, 1, 0)]
+    },
+	{
+      name: 'row with multiple events in a column',
+      given: {
+        renderableEventsList: [],
+        rowGroup: RowGroup(0, 2, [ EventGroup(0, 1, [Event(0,1), Event(1,2)]) ])
+      },
+      expected: [RenderableEvent(0, 1, 1, 0), RenderableEvent(1, 2, 1, 1)]
+    },
+	{
+      name: 'row with multiple columns',
+      given: {
+        renderableEventsList: [],
+        rowGroup: RowGroup(0, 2, [ EventGroup(0, 1, [Event(0,1)]), EventGroup(0, 2, [Event(0,2)]) ])
+      },
+      expected: [RenderableEvent(0, 1, 2, 0), RenderableEvent(0, 2, 2, 0)]
+    },
   ]
 
   tests.forEach(function(test) {
-    assert(rowGroupToRenderableList(test.given.renderableEventsList, test.given.rowGroup), test.expected)
+    assert(rowGroupToRenderableList(test.given.renderableEventsList, test.given.rowGroup), test.expected, test.name)
   })
 })()
