@@ -1,5 +1,9 @@
 # Facebook Front end Coding Challenge Instructions
 
+### (Note: This challenge was leaked and no is no longer used. I simply did it for academic purposes)
+
+---
+
 Thanks for your interest in the front end engineering role! The next step in the interview process will require you to complete our coding challenge. Our team reviews all submissions closely and it's been very helpful for us to gain insight into your problem solving and coding abilities. Included below are the details for the challenge, along with one attachment. Your solution will be run through a suite of test cases and evaluated on correctness, elegance, and readability.
 
 # Puzzle Materials
