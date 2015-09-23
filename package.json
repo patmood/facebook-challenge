@@ -4,6 +4,7 @@
   "description": "### (Note: This challenge was leaked and no is no longer used. I simply did it for academic purposes)",
   "main": "calendar.js",
   "scripts": {
+    "start": "http-server dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/patmood/facebook-challenge#readme",
   "devDependencies": {
     "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.1"
+    "gulp-babel": "^5.2.1",
+    "gulp-livereload": "^3.8.0"
   }
 }

@@ -1,6 +1,6 @@
 # Facebook Front end Coding Challenge Instructions
 
-### (Note: This challenge was leaked and no is no longer used. I simply did it for academic purposes)
+### (Note: This is a leaked interview challenge. I simply did it for academic purposes)
 
 ---
 
