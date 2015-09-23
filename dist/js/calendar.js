@@ -104,12 +104,16 @@ var createEventEl = function createEventEl(event) {
 
 var renderEvents = function renderEvents(renderable) {
   var calendar = document.getElementById('cal-container');
-  calendar.innerHTML = '';
 
   renderable.forEach(function (renderableEvent) {
     var eventEl = createEventEl(renderableEvent);
     calendar.appendChild(eventEl);
   });
+};
+
+var clearCal = function clearCal() {
+  var calendar = document.getElementById('cal-container');
+  calendar.innerHTML = '';
 };
 
 var flow = function flow() {

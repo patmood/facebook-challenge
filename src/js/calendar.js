@@ -89,12 +89,16 @@ const createEventEl = (event) => {
 
 const renderEvents = (renderable) => {
   const calendar = document.getElementById('cal-container')
-	calendar.innerHTML = ''
 
   renderable.forEach(function(renderableEvent) {
     const eventEl = createEventEl(renderableEvent)
     calendar.appendChild(eventEl)
   })
+}
+
+const clearCal = () => {
+  const calendar = document.getElementById('cal-container')
+  calendar.innerHTML = ''
 }
 
 const flow = (...fns) => (arg) => fns.reduce((memo, fn) => fn(memo), arg)
