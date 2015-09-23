@@ -1,4 +1,4 @@
-function assert(expected, actual, name) {
+const assert = (expected, actual, name) => {
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
     console.error(expected, actual)
     throw 'Fail: ' + name
@@ -9,9 +9,9 @@ function assert(expected, actual, name) {
 // - ensure events that start early come before ones that start later
 // - and if events start at the same time, then the ones that finish first come first
 
-;(function sortTests() {
-
-  var tests = [
+// sort Tests
+;(() => {
+  const tests = [
     {
       given: [Event(0,2), Event(0,1)],
       expected: [Event(0,1), Event(0,2)]
@@ -22,15 +22,16 @@ function assert(expected, actual, name) {
     }
   ]
 
-  tests.forEach(function(test) {
+  tests.forEach((test) => {
     assert(sortEvents(test.given), test.expected)
   })
 
 })()
 
-;(function addOrCreateRowGroupTests() {
+// addOrCreateRowGroup Tests
+;(() => {
 
-  var tests = [
+  const tests = [
     {
       given: {
         groupList: [],
@@ -54,15 +55,16 @@ function assert(expected, actual, name) {
     },
   ]
 
-  tests.forEach(function(test) {
+  tests.forEach((test) => {
     assert(addOrCreateRowGroup(test.given.groupList, test.given.event), test.expected)
   })
 
 })()
 
-;(function addOrCreateColumnGroupTests() {
+// addOrCreateColumnGroup Tests
+;(() => {
 
-  var tests = [
+  const tests = [
     {
       name: 'creates a new column group',
       given: {
@@ -97,14 +99,15 @@ function assert(expected, actual, name) {
     },
   ]
 
-  tests.forEach(function(test) {
+  tests.forEach((test) => {
     assert(addOrCreateColumnGroup(test.given.groupList, test.given.event), test.expected, test.name)
   })
 
 })()
 
-;(function rowGroupToRenderableListTest() {
-  var tests = [
+// rowGroupToRenderableList Test
+;(() => {
+  const tests = [
     {
       name: 'Produces flat renderable event from nested event',
       given: {
@@ -147,7 +150,7 @@ function assert(expected, actual, name) {
     },
   ]
 
-  tests.forEach(function(test) {
+  tests.forEach((test) => {
     assert(rowGroupToRenderableList(test.given.renderableEventsList, test.given.rowGroup), test.expected, test.name)
   })
 })()

@@ -1,6 +1,6 @@
 'use strict';
 
-function assert(expected, actual, name) {
+var assert = function assert(expected, actual, name) {
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
     console.error(expected, actual);
     throw 'Fail: ' + name;
@@ -11,8 +11,8 @@ function assert(expected, actual, name) {
 // - ensure events that start early come before ones that start later
 // - and if events start at the same time, then the ones that finish first come first
 
-;(function sortTests() {
-
+// sort Tests
+;(function () {
   var tests = [{
     given: [Event(0, 2), Event(0, 1)],
     expected: [Event(0, 1), Event(0, 2)]
@@ -24,7 +24,10 @@ function assert(expected, actual, name) {
   tests.forEach(function (test) {
     assert(sortEvents(test.given), test.expected);
   });
-})();(function addOrCreateRowGroupTests() {
+})();
+
+// addOrCreateRowGroup Tests
+(function () {
 
   var tests = [{
     given: {
@@ -49,7 +52,10 @@ function assert(expected, actual, name) {
   tests.forEach(function (test) {
     assert(addOrCreateRowGroup(test.given.groupList, test.given.event), test.expected);
   });
-})();(function addOrCreateColumnGroupTests() {
+})();
+
+// addOrCreateColumnGroup Tests
+(function () {
 
   var tests = [{
     name: 'creates a new column group',
@@ -84,7 +90,10 @@ function assert(expected, actual, name) {
   tests.forEach(function (test) {
     assert(addOrCreateColumnGroup(test.given.groupList, test.given.event), test.expected, test.name);
   });
-})();(function rowGroupToRenderableListTest() {
+})();
+
+// rowGroupToRenderableList Test
+(function () {
   var tests = [{
     name: 'Produces flat renderable event from nested event',
     given: {
