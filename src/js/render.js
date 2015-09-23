@@ -1,12 +1,12 @@
-var sampleData = [
+const sampleData = [
 	{start: 30, end: 150},
 	{start: 540, end: 600},
 	{start: 560, end: 620},
 	{start: 610, end: 670}
 ]
 
-function createEventEl(event) {
-  var node = document.createElement('div')
+const createEventEl = (event) => {
+  let node = document.createElement('div')
   node.className = 'event'
   node.style.cssText = 'top:' + event.top + 'px;'
                   + 'left:' + event.left + 'px;'
@@ -15,15 +15,15 @@ function createEventEl(event) {
   return node
 }
 
-function render(renderable) {
-  var calendar = document.getElementById('cal-container')
+const render = (renderable) => {
+  const calendar = document.getElementById('cal-container')
 
   renderable.forEach(function(renderableEvent) {
-    var eventEl = createEventEl(renderableEvent)
+    const eventEl = createEventEl(renderableEvent)
     calendar.appendChild(eventEl)
   })
 }
 
-var renderable = flowEvents(sampleData, [sortEvents, groupEventRow, eventListToRow, flatRenderableList])
+const renderable = flowEvents(sampleData, [sortEvents, groupEventRow, eventListToRow, flatRenderableList])
 
 render(renderable)
