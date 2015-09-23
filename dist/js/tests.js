@@ -1,8 +1,8 @@
 'use strict';
 
-var assert = function assert(expected, actual, name) {
+var assert = function assert(actual, expected, name) {
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
-    console.error(expected, actual);
+    console.error(actual, expected);
     throw 'Fail: ' + name;
   }
 }
@@ -133,5 +133,26 @@ var assert = function assert(expected, actual, name) {
 
   tests.forEach(function (test) {
     assert(rowGroupToRenderableList(test.given.renderableEventsList, test.given.rowGroup), test.expected, test.name);
+  });
+})();
+
+// layOutDay Test
+(function () {
+  var tests = [{
+    name: 'Renders sample events',
+    given: sampleData,
+    expected: [RenderableEvent(30, 150, 1, 0), RenderableEvent(540, 600, 2, 0), RenderableEvent(610, 670, 2, 0), RenderableEvent(560, 620, 2, 1)]
+  }, {
+    name: 'Handles events starting at same time',
+    given: [Event(0, 1), Event(0, 1), Event(0, 1)],
+    expected: [RenderableEvent(0, 1, 3, 0), RenderableEvent(0, 1, 3, 1), RenderableEvent(0, 1, 3, 2)]
+  }, {
+    name: 'Large first column',
+    given: [Event(0, 100), Event(10, 20), Event(20, 30)],
+    expected: [RenderableEvent(0, 100, 2, 0), RenderableEvent(10, 20, 2, 1), RenderableEvent(20, 30, 2, 1)]
+  }];
+
+  tests.forEach(function (test) {
+    assert(layOutDay(test.given), test.expected, test.name);
   });
 })();

@@ -9,8 +9,9 @@ const layOutDay = flow(
 										sortEvents,
 										groupEventRow,
 										eventListToRow,
-										flatRenderableList,
-										renderEvents
+										flatRenderableList
 									)
 
-layOutDay(sampleData)
+// renderEvents(layOutDay(sampleData))
+
+renderEvents(layOutDay([Event(0,100), Event(10,20), Event(20,30)]))
