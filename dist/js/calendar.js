@@ -8,7 +8,7 @@ var EventGroup = function EventGroup(start, end, events) {
   return { start: start, end: end, events: events };
 };
 var RowGroup = function RowGroup(start, end, columns) {
-  return { start: start, end: end, columns: columns, columns: columns };
+  return { start: start, end: end, columns: columns };
 };
 var RenderableEvent = function RenderableEvent(start, end, rowLength, columnIndex) {
   var width = BASE_WIDTH / rowLength;
@@ -20,7 +20,7 @@ var RenderableEvent = function RenderableEvent(start, end, rowLength, columnInde
   };
 };
 
-function sortEvents(eventList) {
+var sortEvents = function sortEvents(eventList) {
   return eventList.sort(function (eventA, eventB) {
     var startDelta = eventA.start - eventB.start;
     if (startDelta === 0) {
@@ -30,17 +30,17 @@ function sortEvents(eventList) {
       return startDelta;
     }
   });
-}
+};
 
-function groupEventRow(eventList) {
+var groupEventRow = function groupEventRow(eventList) {
   return eventList.reduce(addOrCreateRowGroup, []);
-}
+};
 
-function groupEventColumns(eventList) {
+var groupEventColumns = function groupEventColumns(eventList) {
   return eventList.reduce(addOrCreateColumnGroup, []);
-}
+};
 
-function addOrCreateRowGroup(listOfRowGroups, event) {
+var addOrCreateRowGroup = function addOrCreateRowGroup(listOfRowGroups, event) {
   // Group by overlapping events
   var lastGroup = listOfRowGroups[listOfRowGroups.length - 1];
   if (lastGroup && event.start < lastGroup.end) {
@@ -52,9 +52,9 @@ function addOrCreateRowGroup(listOfRowGroups, event) {
     // Create new group
     return listOfRowGroups.concat([EventGroup(event.start, event.end, [event])]);
   }
-}
+};
 
-function addOrCreateColumnGroup(listOfColumnGroups, event) {
+var addOrCreateColumnGroup = function addOrCreateColumnGroup(listOfColumnGroups, event) {
   // Group by non-overlapping events
   var lastGroup = listOfColumnGroups.find(function (columnGroup) {
     return columnGroup.end <= event.start;
@@ -67,20 +67,20 @@ function addOrCreateColumnGroup(listOfColumnGroups, event) {
   } else {
     return listOfColumnGroups.concat([EventGroup(event.start, event.end, [event])]);
   }
-}
+};
 
-function eventColumn(eventGroup) {
+var eventColumn = function eventColumn(eventGroup) {
   return RowGroup(eventGroup.start, eventGroup.end, groupEventColumns(eventGroup.events));
-}
+};
 
-function eventListToRow(eventList) {
+var eventListToRow = function eventListToRow(eventList) {
   return eventList.map(eventColumn);
-}
+};
 
 // mapCat or flatMap
 // Write reduce over rowgroups that produces renderable event list
 
-function rowGroupToRenderableList(renderableEventsList, rowGroup) {
+var rowGroupToRenderableList = function rowGroupToRenderableList(renderableEventsList, rowGroup) {
   var events = [];
   rowGroup.columns.map(function (columnGroup, i) {
     columnGroup.events.map(function (event) {
@@ -89,27 +89,19 @@ function rowGroupToRenderableList(renderableEventsList, rowGroup) {
   });
 
   return renderableEventsList.concat(events);
-}
+};
 
-function flatRenderableList(rowGroupList) {
+var flatRenderableList = function flatRenderableList(rowGroupList) {
   return rowGroupList.reduce(rowGroupToRenderableList, []);
-}
+};
 
-function flowEvents(eventList, fns) {
+var flowEvents = function flowEvents(eventList, fns) {
   return fns.reduce(function (prevResult, currentFn) {
     return currentFn(prevResult);
   }, eventList);
-}
+};
 
-// TODO: implement flow function
-// FInish reducing
-// Start with unsorted event list
-// flow through to list of dom nodes
-// Render
-
+// TODO:
 // Start new version to get time complexity down
 // Transduce instead of reduce
 // Can render row as soon as its finished
-
-// ES6
-// https://web-design-weekly.com/2015/03/19/barebones-es6-project-using-gulp/
