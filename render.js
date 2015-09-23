@@ -24,12 +24,6 @@ function render(renderable) {
   })
 }
 
-render(
-  flatRenderableList(
-    eventListToRow(
-      groupEventRow(
-        sortEvents(sampleData)
-      )
-    )
-  )
-)
+var renderable = flowEvents(sampleData, [sortEvents, groupEventRow, eventListToRow, flatRenderableList])
+
+render(renderable)

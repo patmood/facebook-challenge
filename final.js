@@ -88,6 +88,12 @@ function flatRenderableList(rowGroupList) {
   return rowGroupList.reduce(rowGroupToRenderableList, [])
 }
 
+function flowEvents(eventList, fns) {
+  return fns.reduce(function(prevResult, currentFn) {
+    return currentFn(prevResult)
+  }, eventList)
+}
+
 // TODO: implement flow function
 // FInish reducing
 // Start with unsorted event list
