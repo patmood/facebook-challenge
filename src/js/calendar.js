@@ -102,11 +102,8 @@ const renderEvents = (renderable) => {
   })
 }
 
-const flow = (arg, fns) => {
-  return fns.reduce((prevResult, currentFn) => {
-    return currentFn(prevResult)
-  }, arg)
-}
+const flow = (...fns) => (arg) => fns.reduce((memo, fn) => fn(memo), arg)
+
 
 // TODO:
 // Start new version to get time complexity down

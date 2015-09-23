@@ -112,10 +112,16 @@ var renderEvents = function renderEvents(renderable) {
   });
 };
 
-var flow = function flow(arg, fns) {
-  return fns.reduce(function (prevResult, currentFn) {
-    return currentFn(prevResult);
-  }, arg);
+var flow = function flow() {
+  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
+    fns[_key] = arguments[_key];
+  }
+
+  return function (arg) {
+    return fns.reduce(function (memo, fn) {
+      return fn(memo);
+    }, arg);
+  };
 };
 
 // TODO:

@@ -5,8 +5,12 @@ const sampleData = [
 	{start: 610, end: 670}
 ]
 
-const layOutDay = (events) => {
-	flow(events, [sortEvents, groupEventRow, eventListToRow, flatRenderableList, renderEvents])
-}
+const layOutDay = flow(
+										sortEvents,
+										groupEventRow,
+										eventListToRow,
+										flatRenderableList,
+										renderEvents
+									)
 
 layOutDay(sampleData)
