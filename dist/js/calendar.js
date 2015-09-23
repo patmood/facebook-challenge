@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var BASE_WIDTH = 600;
 var Event = function Event(start, end) {
@@ -95,10 +95,27 @@ var flatRenderableList = function flatRenderableList(rowGroupList) {
   return rowGroupList.reduce(rowGroupToRenderableList, []);
 };
 
-var flowEvents = function flowEvents(eventList, fns) {
+var createEventEl = function createEventEl(event) {
+  var node = document.createElement('div');
+  node.className = 'event';
+  node.style.cssText = 'top:' + event.top + 'px;' + 'left:' + event.left + 'px;' + 'width:' + event.width + 'px;' + 'height:' + event.height + 'px;';
+  return node;
+};
+
+var renderEvents = function renderEvents(renderable) {
+  var calendar = document.getElementById('cal-container');
+  calendar.innerHTML = '';
+
+  renderable.forEach(function (renderableEvent) {
+    var eventEl = createEventEl(renderableEvent);
+    calendar.appendChild(eventEl);
+  });
+};
+
+var flow = function flow(arg, fns) {
   return fns.reduce(function (prevResult, currentFn) {
     return currentFn(prevResult);
-  }, eventList);
+  }, arg);
 };
 
 // TODO:

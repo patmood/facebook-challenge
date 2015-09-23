@@ -82,10 +82,30 @@ const rowGroupToRenderableList = (renderableEventsList, rowGroup) => {
 
 const flatRenderableList = (rowGroupList) => rowGroupList.reduce(rowGroupToRenderableList, [])
 
-const flowEvents = (eventList, fns) => {
+const createEventEl = (event) => {
+  let node = document.createElement('div')
+  node.className = 'event'
+  node.style.cssText = 'top:' + event.top + 'px;'
+                  + 'left:' + event.left + 'px;'
+                  + 'width:' + event.width + 'px;'
+                  + 'height:' + event.height + 'px;'
+  return node
+}
+
+const renderEvents = (renderable) => {
+  const calendar = document.getElementById('cal-container')
+	calendar.innerHTML = ''
+
+  renderable.forEach(function(renderableEvent) {
+    const eventEl = createEventEl(renderableEvent)
+    calendar.appendChild(eventEl)
+  })
+}
+
+const flow = (arg, fns) => {
   return fns.reduce((prevResult, currentFn) => {
     return currentFn(prevResult)
-  }, eventList)
+  }, arg)
 }
 
 // TODO:
