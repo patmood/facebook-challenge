@@ -14,4 +14,4 @@ const layOutDay = flow(
 
 // renderEvents(layOutDay(sampleData))
 
-renderEvents(layOutDay([Event(0,100), Event(10,20), Event(20,30)]))
+renderEvents(layOutDay([Event(0,50), Event(10,20), Event(20,30)]))

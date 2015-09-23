@@ -47,10 +47,17 @@ var assert = function assert(actual, expected, name) {
       event: Event(1, 2)
     },
     expected: [EventGroup(0, 1, [Event(0, 1)]), EventGroup(1, 2, [Event(1, 2)])]
+  }, {
+    name: 'add to existing row when large first event',
+    given: {
+      groupList: [EventGroup(0, 50, [Event(0, 50), Event(10, 20)])],
+      event: Event(20, 30)
+    },
+    expected: [EventGroup(0, 50, [Event(0, 50), Event(10, 20), Event(20, 30)])]
   }];
 
   tests.forEach(function (test) {
-    assert(addOrCreateRowGroup(test.given.groupList, test.given.event), test.expected);
+    assert(addOrCreateRowGroup(test.given.groupList, test.given.event), test.expected, test.name);
   });
 })();
 
@@ -85,6 +92,13 @@ var assert = function assert(actual, expected, name) {
       event: Event(0, 2)
     },
     expected: [EventGroup(0, 1, [Event(0, 1)]), EventGroup(0, 2, [Event(0, 2)])]
+  }, {
+    name: 'multiple existing columns',
+    given: {
+      groupList: [EventGroup(0, 50, [Event(0, 50)]), EventGroup(10, 20, [Event(10, 20)])],
+      event: Event(20, 30)
+    },
+    expected: [EventGroup(0, 50, [Event(0, 50)]), EventGroup(10, 30, [Event(10, 20), Event(20, 30)])]
   }];
 
   tests.forEach(function (test) {
@@ -129,6 +143,13 @@ var assert = function assert(actual, expected, name) {
       rowGroup: RowGroup(540, 670, [EventGroup(540, 670, [Event(540, 600), Event(610, 670)]), EventGroup(560, 620, [Event(560, 620)])])
     },
     expected: [RenderableEvent(540, 600, 2, 0), RenderableEvent(610, 670, 2, 0), RenderableEvent(560, 620, 2, 1)]
+  }, {
+    name: 'large first column',
+    given: {
+      renderableEventsList: [],
+      rowGroup: RowGroup(0, 50, [EventGroup(0, 50, [Event(0, 50)]), EventGroup(10, 30, [Event(10, 20), Event(20, 30)])])
+    },
+    expected: [RenderableEvent(0, 50, 2, 0), RenderableEvent(10, 20, 2, 1), RenderableEvent(20, 30, 2, 1)]
   }];
 
   tests.forEach(function (test) {
@@ -148,8 +169,8 @@ var assert = function assert(actual, expected, name) {
     expected: [RenderableEvent(0, 1, 3, 0), RenderableEvent(0, 1, 3, 1), RenderableEvent(0, 1, 3, 2)]
   }, {
     name: 'Large first column',
-    given: [Event(0, 100), Event(10, 20), Event(20, 30)],
-    expected: [RenderableEvent(0, 100, 2, 0), RenderableEvent(10, 20, 2, 1), RenderableEvent(20, 30, 2, 1)]
+    given: [Event(0, 50), Event(10, 20), Event(20, 30)],
+    expected: [RenderableEvent(0, 50, 2, 0), RenderableEvent(10, 20, 2, 1), RenderableEvent(20, 30, 2, 1)]
   }];
 
   tests.forEach(function (test) {
