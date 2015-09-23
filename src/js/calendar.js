@@ -34,7 +34,7 @@ const addOrCreateRowGroup = (listOfRowGroups, event) => {
   if (lastGroup && event.start < lastGroup.end) {
     // Add to last group
     lastGroup.events.push(event)
-    lastGroup.end = event.end
+    if (lastGroup.end < event.end) lastGroup.end = event.end
     return listOfRowGroups
   } else {
     // Create new group
