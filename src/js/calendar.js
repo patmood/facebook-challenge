@@ -24,14 +24,9 @@ const sortEvents = (eventList) => {
   })
 }
 
+const groupEventRow = (eventList) => eventList.reduce(addOrCreateRowGroup, [])
 
-const groupEventRow = (eventList) => {
-  return eventList.reduce(addOrCreateRowGroup, [])
-}
-
-const groupEventColumns = (eventList) => {
-  return eventList.reduce(addOrCreateColumnGroup, [])
-}
+const groupEventColumns = (eventList) => eventList.reduce(addOrCreateColumnGroup, [])
 
 const addOrCreateRowGroup = (listOfRowGroups, event) => {
   // Group by overlapping events
