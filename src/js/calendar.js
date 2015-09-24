@@ -26,8 +26,6 @@ const sortEvents = (eventList) => {
 
 const groupEventRow = (eventList) => eventList.reduce(addOrCreateRowGroup, [])
 
-const groupEventColumns = (eventList) => eventList.reduce(addOrCreateColumnGroup, [])
-
 const addOrCreateRowGroup = (listOfRowGroups, event) => {
   // Group by overlapping events
   const lastGroup = listOfRowGroups[listOfRowGroups.length - 1]
@@ -42,11 +40,11 @@ const addOrCreateRowGroup = (listOfRowGroups, event) => {
   }
 }
 
+const groupEventColumns = (eventList) => eventList.reduce(addOrCreateColumnGroup, [])
+
 const addOrCreateColumnGroup = (listOfColumnGroups, event) => {
   // Group by non-overlapping events
-  const lastGroup = listOfColumnGroups.find((columnGroup) => {
-    return columnGroup.end <= event.start
-  })
+  const lastGroup = listOfColumnGroups.find((columnGroup) => columnGroup.end <= event.start)
   if (lastGroup && event.start >= lastGroup.end) {
     // Add to existing colunm
     lastGroup.events.push(event)
@@ -57,9 +55,9 @@ const addOrCreateColumnGroup = (listOfColumnGroups, event) => {
   }
 }
 
-const eventColumn = (eventGroup) => RowGroup(eventGroup.start, eventGroup.end, groupEventColumns(eventGroup.events))
+const columnizeEvents = (eventGroup) => RowGroup(eventGroup.start, eventGroup.end, groupEventColumns(eventGroup.events))
 
-const eventListToRow = (eventList) => eventList.map(eventColumn)
+const eventListToRow = (eventList) => eventList.map(columnizeEvents)
 
 // mapCat or flatMap
 // Write reduce over rowgroups that produces renderable event list

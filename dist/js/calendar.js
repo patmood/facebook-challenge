@@ -36,10 +36,6 @@ var groupEventRow = function groupEventRow(eventList) {
   return eventList.reduce(addOrCreateRowGroup, []);
 };
 
-var groupEventColumns = function groupEventColumns(eventList) {
-  return eventList.reduce(addOrCreateColumnGroup, []);
-};
-
 var addOrCreateRowGroup = function addOrCreateRowGroup(listOfRowGroups, event) {
   // Group by overlapping events
   var lastGroup = listOfRowGroups[listOfRowGroups.length - 1];
@@ -52,6 +48,10 @@ var addOrCreateRowGroup = function addOrCreateRowGroup(listOfRowGroups, event) {
     // Create new group
     return listOfRowGroups.concat([EventGroup(event.start, event.end, [event])]);
   }
+};
+
+var groupEventColumns = function groupEventColumns(eventList) {
+  return eventList.reduce(addOrCreateColumnGroup, []);
 };
 
 var addOrCreateColumnGroup = function addOrCreateColumnGroup(listOfColumnGroups, event) {
@@ -69,12 +69,12 @@ var addOrCreateColumnGroup = function addOrCreateColumnGroup(listOfColumnGroups,
   }
 };
 
-var eventColumn = function eventColumn(eventGroup) {
+var columnizeEvents = function columnizeEvents(eventGroup) {
   return RowGroup(eventGroup.start, eventGroup.end, groupEventColumns(eventGroup.events));
 };
 
 var eventListToRow = function eventListToRow(eventList) {
-  return eventList.map(eventColumn);
+  return eventList.map(columnizeEvents);
 };
 
 // mapCat or flatMap
