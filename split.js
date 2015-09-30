@@ -1,4 +1,8 @@
+// Reference: https://github.com/substack/stream-handbook
+
 import through from 'through2'
+import { Readable } from 'stream'
+
 
 // Input will be a string - normally binary
 const split = through(
@@ -41,8 +45,23 @@ const processChunk = (unfinished, chunk) => {
 }
 
 
-process.stdin.setEncoding('utf8').pipe(split).on('data', (data) => { console.log(data.toString().toUpperCase()) })
+
+// Stream from stdin to split function:
+// process.stdin.setEncoding('utf8').pipe(split).on('data', (data) => { console.log(data.toString().toUpperCase()) })
+
+// Run using:
 // (echo -n foo; sleep 1; echo bar; sleep 1; echo -n baz) | babel-node split.js
 
+// JS Created stream:
+const rs = new Readable
+rs.push('beep ')
+rs.push('boop\n')
+rs.push('bop\n')
+rs.push(null)
+rs.pipe(split).on('data', (data) => { console.log(data.toString().toUpperCase()) })
+
+// TODO:
 // Use through to process stream of events into stream of rows into stream of columnized rows
 // Tap into columnized rows to render to DOM
+
+
