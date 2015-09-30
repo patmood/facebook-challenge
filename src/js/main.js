@@ -7,6 +7,8 @@ const sampleData = [
 	{start: 610, end: 670}
 ]
 
-renderEvents(layOutDay(sampleData))
+layOutDay(sampleData)
 
 // renderEvents(layOutDay([Event(0,50), Event(10,20), Event(20,30)]))
+
+global.layOutDay = layOutDay

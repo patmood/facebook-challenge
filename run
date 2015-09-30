@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# unofficial "strict mode": http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+IFS=$'\n\t'
+
+export PATH="./node_modules/.bin:$PATH"
+
+function bundle {
+  ify browserify
+}
+
+function watch {
+  # wach -o ./dist/js/bundle.js rld chrome &
+  ify watchify --verbose &
+  wait
+}
+
+function ify {
+  $1 ./src/js/main.js ./src/js/tests.js \
+    --debug \
+    --transform babelify \
+    --outfile ./dist/js/bundle.js \
+    "${@:2}"
+}
+
+function help {
+  echo instructions
+}
+
+eval "${1-help}"

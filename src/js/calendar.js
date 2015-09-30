@@ -1,8 +1,8 @@
 const BASE_WIDTH = 600
-const Event = (start, end) => { return { start, end } }
-const EventGroup = (start, end, events) => { return { start, end, events } }
-const RowGroup = (start, end, columns) => { return { start, end, columns } }
-const RenderableEvent = (start, end, rowLength, columnIndex) => {
+export const Event = (start, end) => { return { start, end } }
+export const EventGroup = (start, end, events) => { return { start, end, events } }
+export const RowGroup = (start, end, columns) => { return { start, end, columns } }
+export const RenderableEvent = (start, end, rowLength, columnIndex) => {
   const width = BASE_WIDTH / rowLength
   return {
     top: start,
@@ -12,7 +12,7 @@ const RenderableEvent = (start, end, rowLength, columnIndex) => {
   }
 }
 
-const sortEvents = (eventList) => {
+export const sortEvents = (eventList) => {
   return eventList.sort((eventA, eventB) => {
     const startDelta = eventA.start - eventB.start
     if (startDelta === 0) {
@@ -24,9 +24,9 @@ const sortEvents = (eventList) => {
   })
 }
 
-const groupEventRow = (eventList) => eventList.reduce(addOrCreateRowGroup, [])
+export const groupEventRow = (eventList) => eventList.reduce(addOrCreateRowGroup, [])
 
-const addOrCreateRowGroup = (listOfRowGroups, event) => {
+export const addOrCreateRowGroup = (listOfRowGroups, event) => {
   // Group by overlapping events
   const lastGroup = listOfRowGroups[listOfRowGroups.length - 1]
   if (lastGroup && event.start < lastGroup.end) {
@@ -42,7 +42,7 @@ const addOrCreateRowGroup = (listOfRowGroups, event) => {
 
 const groupEventColumns = (eventList) => eventList.reduce(addOrCreateColumnGroup, [])
 
-const addOrCreateColumnGroup = (listOfColumnGroups, event) => {
+export const addOrCreateColumnGroup = (listOfColumnGroups, event) => {
   // Group by non-overlapping events
   const lastGroup = listOfColumnGroups.find((columnGroup) => columnGroup.end <= event.start)
   if (lastGroup && event.start >= lastGroup.end) {
@@ -57,12 +57,12 @@ const addOrCreateColumnGroup = (listOfColumnGroups, event) => {
 
 const columnizeEvents = (eventGroup) => RowGroup(eventGroup.start, eventGroup.end, groupEventColumns(eventGroup.events))
 
-const eventListToRow = (eventList) => eventList.map(columnizeEvents)
+export const eventListToRow = (eventList) => eventList.map(columnizeEvents)
 
 // mapCat or flatMap
 // Write reduce over rowgroups that produces renderable event list
 
-const rowGroupToRenderableList = (renderableEventsList, rowGroup) => {
+export const rowGroupToRenderableList = (renderableEventsList, rowGroup) => {
   let events = []
   rowGroup.columns.map((columnGroup, i) => {
     columnGroup.events.map((event) => {
@@ -73,7 +73,7 @@ const rowGroupToRenderableList = (renderableEventsList, rowGroup) => {
   return renderableEventsList.concat(events)
 }
 
-const flatRenderableList = (rowGroupList) => rowGroupList.reduce(rowGroupToRenderableList, [])
+export const flattenRenderableList = (rowGroupList) => rowGroupList.reduce(rowGroupToRenderableList, [])
 
 const createEventEl = (event) => {
   let node = document.createElement('div')
@@ -85,9 +85,9 @@ const createEventEl = (event) => {
   return node
 }
 
-const renderEvents = (renderable) => {
+export const renderEvents = (renderable) => {
   const calendar = document.getElementById('cal-container')
-
+  clearCal()
   renderable.forEach(function(renderableEvent) {
     const eventEl = createEventEl(renderableEvent)
     calendar.appendChild(eventEl)
@@ -99,8 +99,19 @@ const clearCal = () => {
   calendar.innerHTML = ''
 }
 
-const flow = (...fns) => (arg) => fns.reduce((memo, fn) => fn(memo), arg)
+export const flow = (...fns) => (arg) => fns.reduce((memo, fn) => fn(memo), arg)
 
+export const layOutDayAlgorithm = flow(
+	sortEvents,
+	groupEventRow,
+	eventListToRow,
+	flattenRenderableList
+)
+
+export const layOutDay = flow(
+	layOutDayAlgorithm,
+  renderEvents
+)
 
 // TODO:
 // Start new version to get time complexity down

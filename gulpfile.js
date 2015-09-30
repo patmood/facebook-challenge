@@ -1,9 +1,12 @@
 var gulp = require('gulp')
 var babel = require('gulp-babel')
+var browserify = require('gulp-browserify')
+
 var livereload = require('gulp-livereload')
 
 gulp.task('scripts', function() {
-  return gulp.src('src/js/**/*')
+  return gulp.src('src/js/app.js')
+          .pipe(browserify())
           .pipe(babel())
           .pipe(gulp.dest('dist/js'))
           .pipe(livereload())
