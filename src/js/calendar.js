@@ -1,3 +1,6 @@
+import through from 'through2'
+import { Readable } from 'stream'
+
 const BASE_WIDTH = 600
 export const Event = (start, end) => { return { start, end } }
 export const EventGroup = (start, end, events) => { return { start, end, events } }
@@ -117,3 +120,9 @@ export const layOutDay = flow(
 // Start new version to get time complexity down
 // Transduce instead of reduce
 // Can render row as soon as its finished
+
+// create Readable stream
+const rowStream = new Readable
+
+
+rowStream.pipe()
