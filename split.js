@@ -61,7 +61,5 @@ rs.push(null)
 rs.pipe(split).on('data', (data) => { console.log(data.toString().toUpperCase()) })
 
 // TODO:
-// Use through to process stream of events into stream of rows into stream of columnized rows
+// Use through2 to process stream of events into stream of rows into stream of columnized rows
 // Tap into columnized rows to render to DOM
-
-

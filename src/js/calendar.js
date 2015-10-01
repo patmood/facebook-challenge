@@ -122,7 +122,14 @@ export const layOutDay = flow(
 // Can render row as soon as its finished
 
 // create Readable stream
-const rowStream = new Readable
+export const rowStream = new Readable
 
-
-rowStream.pipe()
+export const streamToRows = through(
+  function(chunk, enc, callback) {
+    console.log(chunk.toString());
+    callback()
+  },
+  function(callback) {
+    callback()
+  }
+)
