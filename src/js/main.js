@@ -6,10 +6,11 @@ import {
 	eventListToRow,
 	columnizeEvents,
 	flattenRenderableList,
+	rowGroupToRenderableList,
 	renderEvents,
 	layOutDay,
 	rowStream,
-	streamToRows
+	streamToRows,
 } from './calendar'
 
 const sampleData = [
@@ -37,5 +38,7 @@ rowStream
 	.on('data', (data) => {
 		// Render here
 		const rowGroup = columnizeEvents(JSON.parse(data.toString()))
+		const flatList = rowGroupToRenderableList([], rowGroup)
 		console.log(rowGroup)
+		renderEvents(flatList)
 	})

@@ -90,7 +90,6 @@ const createEventEl = (event) => {
 
 export const renderEvents = (renderable) => {
   const calendar = document.getElementById('cal-container')
-  clearCal()
   renderable.forEach(function(renderableEvent) {
     const eventEl = createEventEl(renderableEvent)
     calendar.appendChild(eventEl)
