@@ -58,7 +58,7 @@ export const addOrCreateColumnGroup = (listOfColumnGroups, event) => {
   }
 }
 
-const columnizeEvents = (eventGroup) => RowGroup(eventGroup.start, eventGroup.end, groupEventColumns(eventGroup.events))
+export const columnizeEvents = (eventGroup) => RowGroup(eventGroup.start, eventGroup.end, groupEventColumns(eventGroup.events))
 
 export const eventListToRow = (eventList) => eventList.map(columnizeEvents)
 
@@ -126,10 +126,28 @@ export const rowStream = new Readable
 
 export const streamToRows = through(
   function(chunk, enc, callback) {
-    console.log(chunk.toString());
+    // Right now chunk is always complete object - May not always be the case
+    const [row, unfinishedRow] = processChunk(this._unfinishedRow, JSON.parse(chunk.toString()))
+    this._unfinishedRow = unfinishedRow
+    if (row) this.push(JSON.stringify(row)) // Must push string, not obj
     callback()
   },
   function(callback) {
+    if (this._unfinishedRow) this.push(JSON.stringify(this._unfinishedRow))
     callback()
   }
 )
+
+// unfinished row, event -> row, unfinished row
+const processChunk = (unfinishedRow, event) => {
+  if (unfinishedRow && event.start < unfinishedRow.end) {
+    // Add to last group
+    unfinishedRow.events.push(event)
+    if (unfinishedRow.end < event.end) unfinishedRow.end = event.end
+    return [ null, unfinishedRow ]
+  } else {
+    // Create new group
+    const finishedRow = unfinishedRow
+    return [ finishedRow, EventGroup(event.start, event.end, [event]) ]
+  }
+}

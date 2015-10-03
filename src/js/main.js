@@ -4,6 +4,7 @@ import {
 	sortEvents,
 	groupEventRow,
 	eventListToRow,
+	columnizeEvents,
 	flattenRenderableList,
 	renderEvents,
 	layOutDay,
@@ -18,13 +19,23 @@ const sampleData = [
 	{start: 610, end: 670}
 ]
 
+// Calculate everything then render
+// ===================================
 // layOutDay(sampleData)
-
-layOutDay([Event(0,50), Event(10,20), Event(20,30)])
+// layOutDay([Event(0,50), Event(10,20), Event(20,30)])
 
 global.layOutDay = layOutDay
 
-rowStream.pipe(streamToRows).on('data', (data) => { console.log(data.toString().toUpperCase()) })
-
-sampleData.forEach((ev) => rowStream.push(JSON.stringify(ev)) )
+// Stream render
+// ===================================
+// Sort events and push into stream
+sortEvents(sampleData).forEach((ev) => rowStream.push(JSON.stringify(ev)) )
 rowStream.push(null)
+
+rowStream
+	.pipe(streamToRows)
+	.on('data', (data) => {
+		// Render here
+		const rowGroup = columnizeEvents(JSON.parse(data.toString()))
+		console.log(rowGroup)
+	})
