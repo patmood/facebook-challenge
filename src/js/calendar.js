@@ -121,18 +121,23 @@ export const layOutDay = flow(
 // Can render row as soon as its finished
 
 // create Readable stream
-export const rowStream = new Readable
+export const eventStream = (eventList) => {
+  const stream = new Readable({ objectMode: true })
+  eventList.forEach((ev) => stream.push(ev) )
+  stream.push(null)
+  return stream
+}
 
-export const streamToRows = through(
+export const streamToRows = through.obj(
   function(chunk, enc, callback) {
     // Right now chunk is always complete object - May not always be the case
-    const [row, unfinishedRow] = processChunk(this._unfinishedRow, JSON.parse(chunk.toString()))
+    const [row, unfinishedRow] = processChunk(this._unfinishedRow, chunk)
     this._unfinishedRow = unfinishedRow
-    if (row) this.push(JSON.stringify(row)) // Must push string, not obj
+    if (row) this.push(row)
     callback()
   },
   function(callback) {
-    if (this._unfinishedRow) this.push(JSON.stringify(this._unfinishedRow))
+    if (this._unfinishedRow) this.push(this._unfinishedRow)
     callback()
   }
 )

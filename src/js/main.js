@@ -9,7 +9,7 @@ import {
 	rowGroupToRenderableList,
 	renderEvents,
 	layOutDay,
-	rowStream,
+	eventStream,
 	streamToRows,
 } from './calendar'
 
@@ -30,15 +30,12 @@ global.layOutDay = layOutDay
 // Stream render
 // ===================================
 // Sort events and push into stream
-sortEvents(sampleData).forEach((ev) => rowStream.push(JSON.stringify(ev)) )
-rowStream.push(null)
 
-rowStream
+eventStream(sortEvents(sampleData))
 	.pipe(streamToRows)
 	.on('data', (data) => {
 		// Render here
-		const rowGroup = columnizeEvents(JSON.parse(data.toString()))
+		const rowGroup = columnizeEvents(data)
 		const flatList = rowGroupToRenderableList([], rowGroup)
-		console.log(rowGroup)
 		renderEvents(flatList)
 	})
